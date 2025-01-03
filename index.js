@@ -36,7 +36,7 @@ app.get('/api/availability', async (req, res) => {
   
   const providedDate = new Date(date);
   if (providedDate <= new Date()) {
-    return res.status(400).json({ error: "Past dates are not allowed." });
+    return res.json({ error: "Past dates are not allowed." });
   }
 
   const existingBooking = await Booking.findOne({ date });
@@ -53,6 +53,10 @@ app.post('/api/bookings', async (req, res) => {
     return res.status(400).json({ error: 'All fields are required' });
   }
 
+  const providedDate = new Date(date);
+  if (providedDate <= new Date()) {
+    return res.status(400).json({ error: "Past dates are not allowed." });
+  }
   const existingBooking = await Booking.findOne({ date, time });
   if (existingBooking) {
     return res.status(400).json({ error: 'Slot is already booked' });
