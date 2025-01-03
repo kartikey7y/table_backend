@@ -30,9 +30,13 @@ const Booking = mongoose.model('Booking', bookingSchema);
 // Check availability
 app.get('/api/availability', async (req, res) => {
   const { date, time } = req.query;
-
   if (!date || !time) {
     return res.status(400).json({ error: 'Date and time are required' });
+  }
+  
+  const providedDate = new Date(date);
+  if (providedDate <= new Date()) {
+    return res.status(400).json({ error: "Past dates are not allowed." });
   }
 
   const existingBooking = await Booking.findOne({ date });
