@@ -55,7 +55,7 @@ app.post('/api/bookings', async (req, res) => {
   
   const providedDate = new Date(date);
   if (providedDate <= new Date()) {
-    return res.status(200).json({ past: "Past dates are not allowed." });
+    return res.json({ past: "Past dates are not allowed." });
   }
 
   const existingBooking = await Booking.findOne({ date });
